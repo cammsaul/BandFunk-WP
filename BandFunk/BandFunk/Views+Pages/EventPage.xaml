@@ -1,0 +1,89 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="BandFunk.EventPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:maps="clr-namespace:Microsoft.Phone.Controls.Maps;assembly=Microsoft.Phone.Controls.Maps"
+    xmlns:location="clr-namespace:System.Device.Location;assembly=System.Device"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=System.Windows"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="False"
+    toolkit:TiltEffect.IsTiltEnabled="True">
+    <phone:PhoneApplicationPage.Resources>
+        <Style x:Key="EmptyButtonStyle" TargetType="primitives:ButtonBase">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="primitives:ButtonBase">
+                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="White">
+        <ProgressBar x:Name="ProgressBar" Margin="0" Background="{x:Null}" Foreground="{StaticResource BandFunkOrangeBrush}" IsIndeterminate="True" VerticalAlignment="Top" Height="10" Visibility="Visible" />
+        <controls:Panorama Title="{Binding Title, FallbackValue='NOFX w/ Lady Gaga'}" Foreground="{StaticResource BandFunkOrangeBrush}">
+            <controls:PanoramaItem Header="venue">
+                <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+                    <StackPanel VerticalAlignment="Top">
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding FormattedDateString, FallbackValue='Fri, Feb 22 2013 6:35 PM'}" VerticalAlignment="Top" Foreground="{StaticResource BandFunkOrangeBrush}" Margin="0,0,0,12"/>
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Venue.Title, FallbackValue='Maui Arts and Cultural Center - '}" VerticalAlignment="Top" Foreground="{StaticResource BandFunkOrangeBrush}" FontSize="26"/>
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="{StaticResource BandFunkOrangeBrush}" Text="{Binding Venue.StreetAddress, FallbackValue='937A Howard St'}"/>
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Venue.City, FallbackValue='Kahului, HI'}" VerticalAlignment="Top" Foreground="{StaticResource BandFunkOrangeBrush}"/>
+                        <HyperlinkButton toolkit:TiltEffect.IsTiltEnabled="True" Style="{StaticResource EmptyButtonStyle}">
+                            <Grid Height="278" Margin="0,10,0,0">
+                                <maps:Map HorizontalAlignment="Stretch" IsHitTestVisible="False" Name="Map" VerticalAlignment="Stretch" CopyrightVisibility="Collapsed" LogoVisibility="Collapsed" ZoomLevel="13" Height="278" Margin="0" BorderBrush="{StaticResource BandFunkOrangeBrush}" BorderThickness="1" Padding="1" CredentialsProvider="Ap7wpVpFa1K8DQZdByzpbNB5OA_AWJF3DHr2lOi55bNjzF4ZI3c3HCZVg2U6eBJI" Width="396" />                                
+                            </Grid>
+                            <toolkit:ContextMenuService.ContextMenu>
+                                <toolkit:ContextMenu>
+                                    <toolkit:MenuItem Header="open in maps" Name="ContextMenu_Map" Click="ContextMenu_Map_Click_1" />
+                                </toolkit:ContextMenu>
+                            </toolkit:ContextMenuService.ContextMenu>
+                        </HyperlinkButton>
+                    </StackPanel>                        
+                </Grid>
+            </controls:PanoramaItem>
+            <controls:PanoramaItem>
+                <Image Source="{Binding Image, FallbackValue='/Images/bad_religion.png'}" Margin="0,-120,0,0" Height="540" />
+            </controls:PanoramaItem>
+            <controls:PanoramaItem Header="performers">
+                <ListBox Name="OtherArtistsListBox" ItemsSource="{Binding OtherArtists}" Margin="0,0,0,0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock TextWrapping="Wrap" Foreground="{StaticResource BandFunkOrangeBrush}" Text="{Binding}" FontFamily="Segoe WP Semibold" FontSize="29.333" Padding="10" Name="OtherArtistsTextBlock" Tap="OtherArtistsTextBlock_Tap_1"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PanoramaItem>
+        </controls:Panorama>
+    </Grid>
+    
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="1.0" BackgroundColor="#FFF05424" ForegroundColor="White">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.phone.png" Text="call" Click="PhoneButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.website.png" Text="website" Click="WebsiteButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.pin.png" Text="pin to start"  Click="PinToStartButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.share.png" Text="share" Click="ShareEventButton_Click_1"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem x:Name="ShareEventViaTextMessageBarMenuItem" Text="share with text message" Click="ShareEventViaTextMessageBarMenuItem_Click_1"/>
+                <shell:ApplicationBarMenuItem x:Name="ShareEventViaEmailBarMenuItem" Text="share with email" Click="ShareEventViaEmailBarMenuItem_Click_1"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

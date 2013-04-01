@@ -1,0 +1,164 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="BandFunk.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=System.Windows"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="False">
+    <phone:PhoneApplicationPage.Resources>
+        <Style x:Key="EmptyButtonStyle" TargetType="primitives:ButtonBase">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="primitives:ButtonBase">
+                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="White">
+        <ProgressBar x:Name="ProgressBar" Margin="0" Background="{x:Null}" Foreground="{StaticResource BandFunkOrangeBrush}" IsIndeterminate="True" VerticalAlignment="Top" Height="10" Visibility="Visible" />
+        <!--Pivot Control-->
+        <controls:Pivot Name="Pivot" Title="BAND FUNK" Foreground="{StaticResource BandFunkOrangeBrush}">
+            <!--Pivot item one-->
+            <controls:PivotItem Name="ArtistsPivotItem" Header="artists">
+                <StackPanel>
+                    <Grid>
+                        <TextBox Name="AddArtistTextBox" Text="add artist" Foreground="White" VerticalAlignment="Center" Margin="0,0,48,0" GotFocus="AddArtistTextBox_GotFocus_1" LostFocus="AddArtistTextBox_LostFocus_1" Background="{StaticResource BandFunkOrangeBrush}" BorderBrush="{StaticResource BandFunkOrangeBrush}" KeyDown="AddArtistTextBox_KeyDown_1"/>
+                        <HyperlinkButton toolkit:TiltEffect.IsTiltEnabled="True" Style="{StaticResource EmptyButtonStyle}" HorizontalAlignment="Right">
+                            <Image Height="48" Margin="0" VerticalAlignment="Center" Width="48" Source="/Images/button.add.png" Name="AddArtistButton" Tap="AddArtistButton_Tap_1"/>
+                        </HyperlinkButton>
+                    </Grid>
+                    <ListBox HorizontalAlignment="Left" Height="538" VerticalAlignment="Top" Width="456" Name="ArtistListBox">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Height="224" Width="455" Grid.Column="2" Margin="0,0,0,12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="230" />
+                                        <ColumnDefinition Width="230" />
+                                    </Grid.ColumnDefinitions>
+                                    <HyperlinkButton toolkit:TiltEffect.IsTiltEnabled="True" Style="{StaticResource EmptyButtonStyle}">
+                                        <Grid Width="224" Height="224" Background="{StaticResource BandFunkOrangeBrush}" HorizontalAlignment="Left" Margin="0,0,6,0" Name="ArtistGrid" Tap="ArtistGrid_Tap_1">
+                                            <Image Margin="0" Source="{Binding Artist1Image}" Stretch="UniformToFill"/>
+                                            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Artist1Name}" VerticalAlignment="Bottom" Margin="0,0,0,6" RenderTransformOrigin="0.5,0.515" Foreground="White"/>
+                                            <toolkit:ContextMenuService.ContextMenu>
+                                                <toolkit:ContextMenu>
+                                                    <toolkit:MenuItem Header="stop following" Name="ContextMenu_Stop_Following_Artist1" Click="ContextMenu_Stop_Following_Artist1_Click_1" />
+                                                    <toolkit:MenuItem Header="share on social networks" Name="ContextMenu_Share_Artist1" Click="ContextMenu_Share_Artist1_Click_1" />
+                                                    <toolkit:MenuItem Header="share with text message" Name="ContextMenu_Share_Artist1_Text_Message" Click="ContextMenu_Share_Artist1_Text_Message_Click_1" />
+                                                    <toolkit:MenuItem Header="share with email" Name="ContextMenu_Share_Artist1_Email" Click="ContextMenu_Share_Artist1_Email_Click_1" />
+                                                    <toolkit:MenuItem Header="pin to start" Name="ContextMenu_PinToStart_Artist1" Click="ContextMenu_PinToStart_Artist1_Click_1" IsEnabled="{Binding Artist1EnableAddTile}" />
+                                                </toolkit:ContextMenu>
+                                            </toolkit:ContextMenuService.ContextMenu>
+                                        </Grid>
+                                    </HyperlinkButton>
+                                    <HyperlinkButton toolkit:TiltEffect.IsTiltEnabled="True" Style="{StaticResource EmptyButtonStyle}" Grid.Column="1">
+                                        <Grid Visibility="{Binding Artist2GridVisibility}" Width="224" Height="224" Background="{StaticResource BandFunkOrangeBrush}" HorizontalAlignment="Left" Margin="0,0,6,0" Tap="ArtistGrid_Tap_1">
+                                            <Image Margin="0" Source="{Binding Artist2Image}" Stretch="UniformToFill"/>
+                                            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Artist2Name}" VerticalAlignment="Bottom" Margin="0,0,0,6" RenderTransformOrigin="0.5,0.515" Foreground="White"/>
+                                            <toolkit:ContextMenuService.ContextMenu>
+                                                <toolkit:ContextMenu>
+                                                    <toolkit:MenuItem Header="stop following" Name="ContextMenu_Stop_Following_Artist2" Click="ContextMenu_Stop_Following_Artist2_Click_1" />
+                                                    <toolkit:MenuItem Header="share on social networks" Name="ContextMenu_Share_Artist2" Click="ContextMenu_Share_Artist2_Click_1" />
+                                                    <toolkit:MenuItem Header="share with text message" Name="ContextMenu_Share_Artist2_Text_Message" Click="ContextMenu_Share_Artist2_Text_Message_Click_1" />
+                                                    <toolkit:MenuItem Header="share with email" Name="ContextMenu_Share_Artist2_Email" Click="ContextMenu_Share_Artist2_Email_Click_1" />
+                                                    <toolkit:MenuItem Header="pin to start" Name="ContextMenu_PinToStart_Artist2" Click="ContextMenu_PinToStart_Artist2_Click_1" IsEnabled="{Binding Artist2EnableAddTile}" />
+                                                </toolkit:ContextMenu>
+                                            </toolkit:ContextMenuService.ContextMenu>
+                                        </Grid>
+                                    </HyperlinkButton>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>            	
+            </controls:PivotItem>
+            <controls:PivotItem Header="nearby" Name="ShowsPivotItem">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="CURRENT LOCATION:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" />
+                        <TextBlock Name="CurrentLocationTextBlock" Text="UPDATING..." HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Margin="12,0,0,0" />
+                    </StackPanel>
+                    <ListBox Name="ShowsListBox" toolkit:TiltEffect.IsTiltEnabled="True" Height="582">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Tap="EventGrid_Tap">
+                                    <Grid Height="100" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{StaticResource BandFunkOrangeBrush}">
+                                        <Image Source="{Binding Image, FallbackValue='/Images/bad_religion.png'}" Stretch="UniformToFill" />
+                                    </Grid>
+                                    <StackPanel Margin="112,12,10,12" Name="EventStackPanel" Width="346" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <TextBlock TextWrapping="Wrap" Foreground="{StaticResource BandFunkOrangeBrush}" Text="{Binding FavoritesString, FallbackValue='Bad Religion and 2 Others'}" FontFamily="Segoe WP Semibold" FontSize="26"/>
+                                        <TextBlock TextWrapping="Wrap" Foreground="{StaticResource BandFunkOrangeBrush}" Text="{Binding Venue.Title, FallbackValue='The Warfield'}" FontFamily="Segoe WP" FontSize="21.333" Margin="0,5,0,0"/>
+                                        <TextBlock TextWrapping="Wrap" Foreground="{StaticResource BandFunkOrangeBrush}" Text="{Binding FormattedDateString, FallbackValue='date of the event'}" FontFamily="Segoe WP" FontSize="21.333" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                    <toolkit:ContextMenuService.ContextMenu>
+                                        <toolkit:ContextMenu>
+                                            <toolkit:MenuItem Header="share on social networks" Name="ContextMenu_Share_Event" Click="ContextMenu_Share_Event_Click_1" />
+                                            <toolkit:MenuItem Header="share with text message" Name="ContextMenu_Share_Event_Text_Message" Click="ContextMenu_Share_Event_Text_Message_Click_1" />
+                                            <toolkit:MenuItem Header="share with email" Name="ContextMenu_Share_Event_Email" Click="ContextMenu_Share_Event_Email_Click_1" />
+                                            <toolkit:MenuItem Header="pin to start" Name="ContextMenu_PinToStart_Event" Click="ContextMenu_PinToStart_Event_Click_1" IsEnabled="{Binding EnableAddTile}" />
+                                        </toolkit:ContextMenu>
+                                    </toolkit:ContextMenuService.ContextMenu>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </controls:PivotItem>
+            <controls:PivotItem Header="more" Name="MoreShowsPivotItem">
+                <ListBox Name="AllShowsListBox" toolkit:TiltEffect.IsTiltEnabled="True" Height="609">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Tap="EventGrid_Tap">
+                                <Grid Height="100" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{StaticResource BandFunkOrangeBrush}">
+                                    <Image Source="{Binding Image, FallbackValue='/Images/bad_religion.png'}" Stretch="UniformToFill" />
+                                </Grid>
+                                <StackPanel Margin="112,12,10,12" Name="EventStackPanel" Width="346" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                    <TextBlock TextWrapping="Wrap" Foreground="{StaticResource BandFunkOrangeBrush}" Text="{Binding Headliner, FallbackValue='Bad Religion and 2 Others'}" FontFamily="Segoe WP Semibold" FontSize="26"/>
+                                    <TextBlock TextWrapping="Wrap" Foreground="{StaticResource BandFunkOrangeBrush}" Text="{Binding Venue.Title, FallbackValue='The Warfield'}" FontFamily="Segoe WP" FontSize="21.333" Margin="0,5,0,0"/>
+                                    <TextBlock TextWrapping="Wrap" Foreground="{StaticResource BandFunkOrangeBrush}" Text="{Binding FormattedDateString, FallbackValue='date of the event'}" FontFamily="Segoe WP" FontSize="21.333" Margin="0,5,0,0"/>
+                                </StackPanel>
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu>
+                                        <toolkit:MenuItem Header="share on social networks" Name="ContextMenu_Share_Event" Click="ContextMenu_Share_Event_Click_1" />
+                                        <toolkit:MenuItem Header="share with text message" Name="ContextMenu_Share_Event_Text_Message" Click="ContextMenu_Share_Event_Text_Message_Click_1" />
+                                        <toolkit:MenuItem Header="share with email" Name="ContextMenu_Share_Event_Email" Click="ContextMenu_Share_Event_Email_Click_1" />
+                                        <toolkit:MenuItem Header="pin to start" Name="ContextMenu_PinToStart_Event" Click="ContextMenu_PinToStart_Event_Click_1" IsEnabled="{Binding EnableAddTile}" />
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
+                            </Grid>                            
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PivotItem>
+        </controls:Pivot>
+    </Grid>
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="1.0" BackgroundColor="#FFF05424" ForegroundColor="White" Mode="Minimized">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.location.png" Text="update city"  Click="UpdateGPSButton_Click" />
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.share.rest.png" Text="buy full app" Click="PurchaseAppButton_Click" />
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem x:Name="DisableLocationServicesBarMenuItem" Text="disable location services" Click="DisableLocationServicesBarMenuItem_Click_1" />
+                <shell:ApplicationBarMenuItem x:Name="PrivacyPolicyBarMenuItem" Text="privacy policy" Click="PrivacyPolicyBarMenuItem_Click_1" />
+                <shell:ApplicationBarMenuItem x:Name="VisitLuckyBirdOnlineBarMenuItem" Text="visit luckybird online" Click="VisitLuckyBirdOnlineBarMenuItem_Click_1" />
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

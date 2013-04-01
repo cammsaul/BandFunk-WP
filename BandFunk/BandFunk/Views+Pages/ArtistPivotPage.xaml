@@ -1,0 +1,112 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="BandFunk.ArtistPivotPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="False"
+    toolkit:TiltEffect.IsTiltEnabled="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="White">
+        <ProgressBar x:Name="ProgressBar" Margin="0" Background="{x:Null}" Foreground="{StaticResource BandFunkOrangeBrush}" IsIndeterminate="True" VerticalAlignment="Top" Height="10" Visibility="Visible" />
+        <controls:Pivot Name="Pivot" Title="{Binding UppercaseName, FallbackValue='SOCIAL DISTORTION'}" Foreground="{StaticResource BandFunkOrangeBrush}">
+            <controls:PivotItem Header="overview">
+            	<ScrollViewer Width="456">
+            		<StackPanel Width="456">
+            			<Grid Height="300" Background="{StaticResource BandFunkOrangeBrush}">
+            				<Image Margin="0" Source="{Binding MainImageUri}" Stretch="UniformToFill"/>
+            			</Grid>
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,20,10,10" Text="{Binding Bio}" />
+                    </StackPanel>
+            	</ScrollViewer>
+            </controls:PivotItem>
+            <controls:PivotItem Header="shows">
+                <ListBox Name="ShowsListBox" ItemsSource="{Binding Events}" Height="566" VerticalAlignment="Top">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Tap="EventGrid_Tap">
+                                <Grid Height="100" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{StaticResource BandFunkOrangeBrush}">
+                                    <Image Source="{Binding Image, FallbackValue='/Images/bad_religion.png'}" Stretch="UniformToFill" />
+                                </Grid>
+                                <StackPanel Margin="112,12,10,12" Name="EventStackPanel" Width="346" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                    <TextBlock TextWrapping="Wrap" Foreground="{StaticResource BandFunkOrangeBrush}" Text="{Binding Title, FallbackValue='Bad Religion and 2 Others'}" FontFamily="Segoe WP Semibold" FontSize="26"/>
+                                    <TextBlock TextWrapping="Wrap" Foreground="{StaticResource BandFunkOrangeBrush}" Text="{Binding Venue.City, FallbackValue='The Warfield'}" FontFamily="Segoe WP" FontSize="21.333" Margin="0,5,0,0"/>
+                                    <TextBlock TextWrapping="Wrap" Foreground="{StaticResource BandFunkOrangeBrush}" Text="{Binding FormattedDateString, FallbackValue='date of the event'}" FontFamily="Segoe WP" FontSize="21.333" Margin="0,5,0,0"/>
+                                </StackPanel>
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu>
+                                        <toolkit:MenuItem Header="share on social networks" Name="ContextMenu_Share_Event" Click="ContextMenu_Share_Event_Click_1" />
+                                        <toolkit:MenuItem Header="share with text message" Name="ContextMenu_Share_Event_Text_Message" Click="ContextMenu_Share_Event_Text_Message_Click_1" />
+                                        <toolkit:MenuItem Header="share with email" Name="ContextMenu_Share_Event_Email" Click="ContextMenu_Share_Event_Email_Click_1" />
+                                        <toolkit:MenuItem Header="pin to start" Name="ContextMenu_PinToStart_Event" Click="ContextMenu_PinToStart_Event_Click_1" IsEnabled="{Binding EnableAddTile}" />
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
+                            </Grid>
+                        </DataTemplate>                        
+                    </ListBox.ItemTemplate>
+            	</ListBox>
+            </controls:PivotItem>
+            <controls:PivotItem Header="news">
+            	<ListBox Name="NewsListBox" ItemsSource="{Binding NewsItems}" VerticalAlignment="Top" Height="566">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="10,5,10,20" Name="NewsItemStackPanel" Tap="NewsItemStackPanel_Tap_1">
+                                <TextBlock TextWrapping="Wrap" Foreground="{StaticResource BandFunkOrangeBrush}" Text="{Binding Name}" FontFamily="Segoe WP Semibold" FontSize="24"/>
+                                <TextBlock TextWrapping="Wrap" Foreground="{StaticResource BandFunkOrangeBrush}" Text="{Binding Summary}" FontFamily="Segoe WP" FontSize="21.333" Margin="0,5,0,0"/>
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu>
+                                        <toolkit:MenuItem Header="share on social networks" Name="ContextMenu_Share_NewsItem" Click="ContextMenu_Share_NewsItem_Click_1" />
+                                        <toolkit:MenuItem Header="share with text message" Name="ContextMenu_Share_NewsItem_TextMessage" Click="ContextMenu_Share_NewsItem_TextMessage_Click_1" />
+                                        <toolkit:MenuItem Header="share with email" Name="ContextMenu_Share_NewsItem_Email" Click="ContextMenu_Share_NewsItem_Email_Click_1" />
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+            	</ListBox>
+            </controls:PivotItem>
+            <controls:PivotItem Header="genres" Margin="12,28,12,0">
+                <ListBox Name="GenresListBox" ItemsSource="{Binding Genres}" VerticalAlignment="Top" Height="566">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock TextWrapping="Wrap" Foreground="{StaticResource BandFunkOrangeBrush}" Text="{Binding}" FontFamily="Segoe WP Semibold" FontSize="29.333" Padding="10" Name="GenreTextBlock" Tap="GenreTextBlock_Tap_1" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PivotItem>
+            <controls:PivotItem Header="related" Margin="12,28,12,0">
+                <ListBox Name="RelatedArtistsListBox" ItemsSource="{Binding RelatedArtistNames}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock TextWrapping="Wrap" Foreground="{StaticResource BandFunkOrangeBrush}" Text="{Binding}" FontFamily="Segoe WP Semibold" FontSize="29.333" Padding="10" Name="RelatedArtistTextBlock" Tap="RelatedArtistTextBlock_Tap_1" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PivotItem>
+        </controls:Pivot>
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="1.0" BackgroundColor="#FFF05424" ForegroundColor="White">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.like.png" Text="follow"  Click="FollowButton_Click" />
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.share.rest.png" Text="buy full app" Click="PurchaseAppButton_Click" />
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.pin.png" Text="pin to start"  Click="PinToStartButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.share.png" Text="share" Click="ShareArtistButton_Click_1"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem x:Name="ShareArtistViaTextMessageBarMenuItem" Text="share with text message" Click="ShareArtistViaTextMessageBarMenuItem_Click_1"/>
+                <shell:ApplicationBarMenuItem x:Name="ShareArtistViaEmailBarMenuItem" Text="share with email" Click="ShareArtistViaEmailBarMenuItem_Click_1"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>
